@@ -17,7 +17,6 @@
 #include <Wire.h>
 #include <Adafruit_MCP4725.h>
 Adafruit_MCP4725 dac;
-
 int count = 0;
 		bool up = 0;
 		bool down = 0;
@@ -29,16 +28,12 @@ void setup(void) {
   int first_dacValue = 0;
   int dac_analog[280];
   int dac_digital[280] = {1200};
-
   pinMode(8, INPUT);
   pinMode(9, INPUT);
-
   Serial.begin(9600);
   dac.begin(0x60);
   Serial.println("Generating a triangle wave");
-
 	  first_dacValue = analogRead(0);
-
 	  	Serial.print("first_dacValue - ");
 	  	Serial.println(first_dacValue);
   			for(int i = 0; i < 280; i++){
@@ -80,26 +75,26 @@ int delta(int analog[], int digital[], int first_value){
 			}
 	}
 		    delta = digital[num] - analog[num];
-											return delta;
+								  return delta;
 }
 int up_level(void){
 	for (int counter = 0; counter < 4095; counter++)
     {
-      delay(20);
+      delay(10);
       (count < 1200) ? count = 1200 : count = count + 5;
 	   if(count > 2500) break;
 		dac.setVoltage(count, true);
-													return count;
+					   return count;
     }
 }
 int down_level(void){
 	for (int counter = 4095; counter > 0; counter--)
     {
-      delay(20);
+      delay(10);
 	  (count > 2500) ? count = 2500 : count = count--;
       count = count - 5;
 		if(count < 1100) break;
 			dac.setVoltage(count, true);
-													return count;
+						   return count;
     }
 }
